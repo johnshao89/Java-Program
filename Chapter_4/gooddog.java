@@ -1,3 +1,4 @@
+//package chapter_4;
 class GoodDog {
     private int size;
     public int getSize() {

@@ -1,3 +1,4 @@
+package chapter_4;
 class Dog {
     int size;
     String name;

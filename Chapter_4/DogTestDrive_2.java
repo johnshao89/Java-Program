@@ -1,3 +1,4 @@
+package chapter_4;
 class Dog_2 {
     int size;
     void bark (int numOfBarks) {

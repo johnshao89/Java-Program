@@ -1,3 +1,4 @@
+package chapter_4;
 public class Puzzle4 {
 
     class Puzzle4b{

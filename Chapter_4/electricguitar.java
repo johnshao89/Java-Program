@@ -1,3 +1,4 @@
+package chapter_4;
 class ElectricGuitar{
     String brand;
     int numOfPickups;
