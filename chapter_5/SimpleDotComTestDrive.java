@@ -1,46 +1,46 @@
+//package chapter_5;
 
-
-public class SimpleDotComTestDrive
-{
-    public static void main(String[] args) {
-        int[] location = { 2, 3, 4 };
-        String choice = "2";
-        SimpleDotCom dot = new SimpleDotComTestDrive(). new SimpleDotCom();
-
-        dot.setLocation(location);
-        dot.checkYourself(choice);
-
+public class SimpleDotComTestDrive {
+    public static void main(String[] args)
+    {
+        SimpleDotCom dotCom = new SimpleDotComTestDrive().new SimpleDotCom();
+        int[] userLocation = {2,3,4};
+        String userInput ="2";
+        dotCom.setLocations(userLocation);
+        String result = dotCom.checkYourself(userInput);
+        System.out.println(result);
     }
+    
 
-    public class SimpleDotCom {
-        int[] location;
-        int numOfGuess = 0;
-        int numOfHits = 0;
-        String result = "miss";
 
-        // Following code for method
-        public void setLocation(final int[] userLocation) {
-            location = userLocation;
+
+    //The start of SimpleDotCom class
+    public class SimpleDotCom{
+        private int numOfHits=0;
+        private String result = "miss";
+        private int[] locationCells;
+
+        //methods starts
+        public void setLocations(int[] userLocation)
+        {
+            locationCells = userLocation;
         }
 
-        public String checkYourself(final String userGuess) {
-            for (int cell : location)
+        public String checkYourself(String userInput)
+        {
+            int x;
+            for(x=0;x<locationCells.length;x++) //can also use for(int cell: locationCells)
             {
-                if(cell == Integer.parseInt(userGuess))
+                if(locationCells[x] == Integer.parseInt(userInput))
                 {
                     numOfHits++;
-                    numOfGuess++;
                     result = "hit";
                     break;
                 }
             }
-            if(numOfHits==location.length)
+            if(numOfHits==locationCells.length)
             result = "kill";
-            System.out.println(result);
             return result;
         }
     }
-
-    
-    
 }

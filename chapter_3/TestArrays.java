@@ -1,4 +1,4 @@
-//package chapter_3;
+package chapter_3;
 
 public class TestArrays {
     public static void main(String[] args) {
