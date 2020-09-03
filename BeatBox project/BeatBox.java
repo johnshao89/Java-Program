@@ -2,6 +2,10 @@
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.awt.*;
 import javax.sound.midi.*;
 import java.util.*;
@@ -49,7 +53,13 @@ public class BeatBox {
         downTemp.addActionListener(new MyDownTempListener());
         buttonBox.add(downTemp);
 
-        
+        JButton serilizeIt = new JButton("Save");
+        serilizeIt.addActionListener(new MySaveListener());
+        buttonBox.add(serilizeIt);
+
+        JButton restore = new JButton("Restore");
+        restore.addActionListener(new MyRestoreListener());
+        buttonBox.add(restore);
 
         Box nameBox = new Box(BoxLayout.Y_AXIS);
         for(String name: instrumentNames)
@@ -100,7 +110,7 @@ public class BeatBox {
             int instrumentKey = instrument[i];
             for(int j =0; j<16;j++)
             {
-                JCheckBox jc = (JCheckBox)(checkBoxList.get(j + 16*i));
+                JCheckBox jc = checkBoxList.get(j + 16*i);
                 if(jc.isSelected())
                     trackList[j] = instrumentKey;
                 else trackList[j] =0;
@@ -169,4 +179,45 @@ public class BeatBox {
         }
         return event;
     }//close the makeEvent method
-}
+
+    public class MySaveListener implements ActionListener {
+        public void actionPerformed (ActionEvent ev) {
+            boolean[] state = new boolean[256];
+            for(int i=0;i<checkBoxList.size();i++)
+            {
+                JCheckBox check = checkBoxList.get(i);
+                if(check.isSelected())
+                    state[i] = true;
+            }
+            try (FileOutputStream fileStream = new FileOutputStream("SaveState.ser")){
+                ObjectOutputStream os = new ObjectOutputStream(fileStream);
+                os.writeObject(state);
+                os.close();
+            } catch (Exception e) {
+                e.printStackTrace();//TODO: handle exception
+            }
+        }//close the actionPerformed method
+    }//close the MySaveListener class
+
+    public class MyRestoreListener implements ActionListener {
+        public void actionPerformed (ActionEvent ev) {
+            boolean[] getState = new boolean[256];
+            try(FileInputStream inputStream = new FileInputStream("SaveState.ser")) {
+                ObjectInputStream is = new ObjectInputStream(inputStream);
+                getState = (boolean[])is.readObject();
+            } catch (Exception e) {
+                e.printStackTrace();//TODO: handle exception
+            }
+
+            for(int i=0;i<256;i++)
+            {
+                JCheckBox jc = checkBoxList.get(i);
+                if(getState[i])
+                    jc.setSelected(true);
+                else jc.setSelected(false);
+            }
+            sequencer.stop();
+            buildTrackAndStart();
+        }//close the actionPerformed method
+    }//close the MyRestoreListener class
+}//close the beatbox class, outerclass
